@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recepción – HOSPITAL CLÍNICO</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">+</div>
+        <div>
+          <h2>HOSPITAL CLÍNICO</h2>
+          <span>Panel Recepción</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Agenda</div>
+          <button class="nav-item active" data-module="inicio" data-title="Inicio">
+            <span class="icon">🏠</span> Inicio
+          </button>
+          <button class="nav-item" data-module="agenda" data-title="Gestión de Agenda">
+            <span class="icon">📅</span> Agenda
+          </button>
+          <button class="nav-item" data-module="asignar" data-title="Asignar Turno">
+            <span class="icon">➕</span> Asignar Turno
+          </button>
+          <button class="nav-item" data-module="pacientes" data-title="Buscar Pacientes">
+            <span class="icon">🔍</span> Buscar Pacientes
+          </button>
+          <button class="nav-item" data-module="disponibilidad" data-title="Disponibilidad Médicos">
+            <span class="icon">👨‍⚕️</span> Disponibilidad
+          </button>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">RC</div>
+          <div class="user-details">
+            <div class="name" id="userName">-</div>
+            <div class="role" id="userRole">Recepción</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-block btn-sm" id="btnLogout">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" aria-label="Menú">☰</button>
+          <h1 class="page-title" id="pageTitle">Inicio</h1>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <!-- INICIO -->
+        <section class="module active" id="module-inicio">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📅</div>
+              <div class="stat-label">Turnos hoy</div>
+              <div class="stat-value" id="statHoy">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-label">Pendientes</div>
+              <div class="stat-value" id="statPendientes">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">✅</div>
+              <div class="stat-label">Confirmados</div>
+              <div class="stat-value" id="statConfirmados">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">❌</div>
+              <div class="stat-label">Cancelados</div>
+              <div class="stat-value" id="statCancelados">0</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Turnos del día</h3></div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Hora</th>
+                      <th>Paciente</th>
+                      <th>Médico</th>
+                      <th>Especialidad</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="turnosHoyBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- AGENDA -->
+        <section class="module" id="module-agenda">
+          <div id="alertAgenda"></div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Gestión de agenda</h3>
+              <div class="flex gap-1 flex-wrap">
+                <input type="date" id="filtroFechaAgenda" class="form-control" style="width:auto;">
+                <select id="filtroEstadoAgenda" class="form-control" style="width:auto;">
+                  <option value="">Todos</option>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="confirmado">Confirmado</option>
+                  <option value="cancelado">Cancelado</option>
+                  <option value="reprogramado">Reprogramado</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Paciente</th>
+                      <th>Médico</th>
+                      <th>Especialidad</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="agendaBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ASIGNAR TURNO -->
+        <section class="module" id="module-asignar">
+          <div id="alertAsignar"></div>
+          <div class="card">
+            <div class="card-header"><h3>Asignar turno</h3></div>
+            <div class="card-body">
+              <form id="formAsignar">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="asigPaciente">Paciente</label>
+                    <select id="asigPaciente" class="form-control" required>
+                      <option value="">Seleccione...</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="asigEspecialidad">Especialidad</label>
+                    <select id="asigEspecialidad" class="form-control" required>
+                      <option value="">Seleccione...</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="asigMedico">Médico</label>
+                    <select id="asigMedico" class="form-control" required>
+                      <option value="">Seleccione especialidad primero</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="asigFecha">Fecha</label>
+                    <input type="date" id="asigFecha" class="form-control" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="asigHora">Hora</label>
+                    <select id="asigHora" class="form-control" required>
+                      <option value="08:00">08:00</option>
+                      <option value="09:00">09:00</option>
+                      <option value="10:00">10:00</option>
+                      <option value="11:00">11:00</option>
+                      <option value="12:00">12:00</option>
+                      <option value="14:00">14:00</option>
+                      <option value="15:00">15:00</option>
+                      <option value="16:00">16:00</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="asigEstado">Estado inicial</label>
+                    <select id="asigEstado" class="form-control">
+                      <option value="confirmado">Confirmado</option>
+                      <option value="pendiente">Pendiente</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="asigMotivo">Motivo</label>
+                  <input type="text" id="asigMotivo" class="form-control" placeholder="Motivo de la consulta">
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Asignar turno</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- BUSCAR PACIENTES -->
+        <section class="module" id="module-pacientes">
+          <div class="card">
+            <div class="card-header">
+              <h3>Buscar pacientes</h3>
+              <input type="text" id="buscarPaciente" class="form-control" placeholder="Nombre, DNI o email..." style="width:250px;">
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>DNI</th>
+                      <th>Email</th>
+                      <th>Teléfono</th>
+                      <th>Turnos</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pacientesBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DISPONIBILIDAD -->
+        <section class="module" id="module-disponibilidad">
+          <div id="alertDisp"></div>
+          <div class="card">
+            <div class="card-header"><h3>Disponibilidad de médicos</h3></div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Médico</th>
+                      <th>Especialidad</th>
+                      <th>Horario</th>
+                      <th>Disponible</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dispBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/recepcion.js"></script>
+</body>
+</html>

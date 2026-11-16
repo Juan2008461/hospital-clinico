@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desarrollador – HOSPITAL CLÍNICO</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">+</div>
+        <div>
+          <h2>HOSPITAL CLÍNICO</h2>
+          <span>Panel Técnico</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Técnico</div>
+          <button class="nav-item active" data-module="inicio" data-title="Inicio">
+            <span class="icon">🏠</span> Inicio
+          </button>
+          <button class="nav-item" data-module="logs" data-title="Registros del sistema">
+            <span class="icon">📜</span> Logs
+          </button>
+          <button class="nav-item" data-module="storage" data-title="Almacenamiento">
+            <span class="icon">💾</span> Storage
+          </button>
+          <button class="nav-item" data-module="mantenimiento" data-title="Mantenimiento">
+            <span class="icon">🔧</span> Mantenimiento
+          </button>
+          <button class="nav-item" data-module="info" data-title="Información del sistema">
+            <span class="icon">ℹ️</span> Info del sistema
+          </button>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">DV</div>
+          <div class="user-details">
+            <div class="name" id="userName">-</div>
+            <div class="role" id="userRole">Desarrollador</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-block btn-sm" id="btnLogout">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" aria-label="Menú">☰</button>
+          <h1 class="page-title" id="pageTitle">Inicio</h1>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <!-- INICIO -->
+        <section class="module active" id="module-inicio">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📜</div>
+              <div class="stat-label">Entradas de log</div>
+              <div class="stat-value" id="statLogs">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💾</div>
+              <div class="stat-label">Claves en storage</div>
+              <div class="stat-value" id="statKeys">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-label">Usuarios</div>
+              <div class="stat-value" id="statUsers">0</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Panel técnico</h3></div>
+            <div class="card-body">
+              <p>Acceso a funciones de configuración, mantenimiento y registros del sistema de demostración HOSPITAL CLÍNICO.</p>
+              <p class="text-muted mt-1" style="font-size:0.9rem;">Este panel está orientado a tareas de desarrollo y soporte. Los datos se almacenan en localStorage del navegador.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- LOGS -->
+        <section class="module" id="module-logs">
+          <div class="card">
+            <div class="card-header">
+              <h3>Registros del sistema</h3>
+              <button class="btn btn-sm btn-secondary" id="btnRefreshLogs">Actualizar</button>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha / Hora</th>
+                      <th>Usuario</th>
+                      <th>Acción</th>
+                      <th>Detalle</th>
+                    </tr>
+                  </thead>
+                  <tbody id="logsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STORAGE -->
+        <section class="module" id="module-storage">
+          <div class="card">
+            <div class="card-header"><h3>Estado de localStorage</h3></div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Clave</th>
+                      <th>Elementos</th>
+                      <th>Tamaño (aprox.)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="storageBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MANTENIMIENTO -->
+        <section class="module" id="module-mantenimiento">
+          <div id="alertMant"></div>
+          <div class="card">
+            <div class="card-header"><h3>Mantenimiento</h3></div>
+            <div class="card-body">
+              <div class="form-actions" style="flex-direction:column;align-items:flex-start;">
+                <button class="btn btn-warning" id="btnClearLogs">Limpiar logs</button>
+                <button class="btn btn-danger" id="btnClearAll">Borrar todo el storage (reset completo)</button>
+              </div>
+              <p class="text-muted mt-2" style="font-size:0.85rem;">
+                <strong>Limpiar logs:</strong> elimina el historial de acciones.<br>
+                <strong>Borrar todo:</strong> elimina todos los datos y reinicia con los valores de demostración.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- INFO -->
+        <section class="module" id="module-info">
+          <div class="card">
+            <div class="card-header"><h3>Información del sistema</h3></div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Nombre</label>
+                  <input class="form-control" value="HOSPITAL CLÍNICO – Sistema de Gestión Hospitalaria" readonly>
+                </div>
+                <div class="form-group">
+                  <label>Versión</label>
+                  <input class="form-control" value="1.0.0 (Demo Frontend)" readonly>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Stack</label>
+                  <input class="form-control" value="HTML · CSS · JavaScript vanilla" readonly>
+                </div>
+                <div class="form-group">
+                  <label>Almacenamiento</label>
+                  <input class="form-control" value="localStorage (cliente)" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Roles soportados</label>
+                <input class="form-control" value="Paciente · Doctor · Recepción · Administrador · Desarrollador" readonly>
+              </div>
+              <p class="text-muted mt-2" style="font-size:0.85rem;">
+                Diseño preparado para evolución hacia framework frontend (React, Vue, etc.) y backend (API REST / Node / .NET / etc.).
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/desarrollador.js"></script>
+</body>
+</html>

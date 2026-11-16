@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOSPITAL CLÍNICO – Sistema de Gestión Hospitalaria</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="logo-icon">+</div>
+        <h1>HOSPITAL CLÍNICO</h1>
+        <p class="subtitle">Sistema de Gestión Hospitalaria</p>
+      </div>
+
+      <!-- ========== LOGIN ========== -->
+      <div id="viewLogin">
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="username">Nombre de usuario o email</label>
+            <input type="text" id="username" name="username" placeholder="Ingrese su usuario o email" required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required autocomplete="current-password">
+              <button type="button" class="toggle-password" id="toggleLoginPassword" aria-label="Mostrar contraseña" aria-pressed="false" title="Mostrar contraseña">👁</button>
+            </div>
+          </div>
+          <div class="form-group form-forgot">
+            <a href="#" id="linkForgot" class="link-forgot">¿Olvidaste tu usuario o contraseña?</a>
+            <p class="register-prompt">¿Todavía no tenés cuenta? <a href="#" id="linkRegister" class="link-forgot">Registrate como paciente</a></p>
+          </div>
+          <div id="loginError" class="error-message" hidden></div>
+          <div id="loginSuccess" class="success-message" hidden></div>
+          <button type="submit" class="btn btn-primary btn-block">INGRESAR</button>
+        </form>
+      </div>
+
+      <!-- ========== REGISTRO DE PACIENTE ========== -->
+      <div id="viewRegister" class="hidden">
+        <h2 class="forgot-title">Crear cuenta de paciente</h2>
+        <p class="forgot-intro">Completá tus datos para crear una cuenta nueva. Los accesos de doctor, recepción y administración los habilita el administrador del sistema.</p>
+        <form id="registerForm" class="login-form">
+          <div class="form-group">
+            <label for="registerNombre">Nombre completo</label>
+            <input type="text" id="registerNombre" required autocomplete="name" maxlength="100">
+          </div>
+          <div class="form-group">
+            <label for="registerUsername">Nombre de usuario</label>
+            <input type="text" id="registerUsername" required minlength="3" maxlength="40" autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Gmail o correo electrónico</label>
+            <input type="email" id="registerEmail" required autocomplete="email" maxlength="150" placeholder="tu.correo@gmail.com">
+          </div>
+          <div class="form-group">
+            <label for="registerDni">DNI (opcional)</label>
+            <input type="text" id="registerDni" inputmode="numeric" maxlength="20">
+          </div>
+          <div class="form-group">
+            <label for="registerTelefono">Teléfono (opcional)</label>
+            <input type="tel" id="registerTelefono" autocomplete="tel" maxlength="30">
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Contraseña (mínimo 4 caracteres)</label>
+            <input type="password" id="registerPassword" required minlength="4" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label for="registerConfirmPassword">Confirmar contraseña</label>
+            <input type="password" id="registerConfirmPassword" required minlength="4" autocomplete="new-password">
+          </div>
+          <div id="registerError" class="error-message" hidden></div>
+          <div id="registerSuccess" class="success-message" hidden></div>
+          <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
+          <button type="button" class="btn btn-secondary btn-block mt-1" id="btnBackFromRegister">Volver al inicio de sesión</button>
+        </form>
+      </div>
+
+      <!-- ========== RECUPERAR: pedir email ========== -->
+      <div id="viewRecoverEmail" class="hidden">
+        <h2 class="forgot-title">Recuperar acceso</h2>
+        <p class="forgot-intro">
+          Ingresá tu Gmail (u otro correo). Te enviamos una notificación de recuperación de cuenta a ese buzón.
+        </p>
+        <div id="emailConfigWarning" class="hidden"></div>
+        <form id="recoverEmailForm" class="login-form">
+          <div class="form-group">
+            <label for="recoverEmail">Email de la cuenta</label>
+            <input type="email" id="recoverEmail" placeholder="tu.correo@gmail.com" required autocomplete="email">
+          </div>
+          <div id="recoverEmailError" class="error-message" hidden></div>
+          <div id="recoverEmailSuccess" class="success-message" hidden></div>
+          <button type="submit" class="btn btn-primary btn-block" id="btnSendRecover">
+            Enviar correo de recuperación
+          </button>
+          <button type="button" class="btn btn-secondary btn-block mt-1" id="btnBackFromEmail">Volver al inicio de sesión</button>
+        </form>
+      </div>
+
+      <!-- ========== Token recibido / nueva contraseña ========== -->
+      <div id="viewResetPass" class="hidden">
+        <h2 class="forgot-title">Nueva contraseña</h2>
+        <p class="forgot-intro">
+          Cuenta: <strong id="resetAccountLabel"></strong>
+          <br>
+          <span class="text-muted" style="font-size:0.85rem;">Estás recuperando el acceso a tu cuenta existente (no se crea otra).</span>
+        </p>
+        <form id="resetPassForm" class="login-form">
+          <input type="hidden" id="resetUserId">
+          <input type="hidden" id="resetToken">
+          <div class="form-group">
+            <label for="resetNewPass">Nueva contraseña</label>
+            <input type="password" id="resetNewPass" placeholder="Mínimo 4 caracteres" required minlength="4" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label for="resetConfirmPass">Confirmar nueva contraseña</label>
+            <input type="password" id="resetConfirmPass" placeholder="Repetí la contraseña" required minlength="4" autocomplete="new-password">
+          </div>
+          <div id="resetPassError" class="error-message" hidden></div>
+          <div id="resetPassSuccess" class="success-message" hidden></div>
+          <button type="submit" class="btn btn-primary btn-block">Guardar y recuperar acceso</button>
+          <button type="button" class="btn btn-secondary btn-block mt-1" id="btnBackFromReset">Volver al login</button>
+        </form>
+      </div>
+
+      <div class="login-hint">
+        <p><strong>Usuarios de demostración:</strong></p>
+        <ul>
+          <li>paciente / 1234</li>
+          <li>doctor / 1234</li>
+          <li>recepcion / 1234</li>
+          <li>admin / 1234</li>
+          <li>dev / 1234</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="js/auth.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

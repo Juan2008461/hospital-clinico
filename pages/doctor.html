@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor – HOSPITAL CLÍNICO</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">+</div>
+        <div>
+          <h2>HOSPITAL CLÍNICO</h2>
+          <span>Panel Médico</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <button class="nav-item active" data-module="inicio" data-title="Inicio">
+            <span class="icon">🏠</span> Inicio
+          </button>
+          <button class="nav-item" data-module="agenda" data-title="Mi Agenda">
+            <span class="icon">📅</span> Mi Agenda
+          </button>
+          <button class="nav-item" data-module="consultas" data-title="Registrar Consulta">
+            <span class="icon">🩺</span> Registrar Consulta
+          </button>
+          <button class="nav-item" data-module="historial" data-title="Historial de Pacientes">
+            <span class="icon">📋</span> Historial Pacientes
+          </button>
+          <button class="nav-item" data-module="notas" data-title="Notas Médicas">
+            <span class="icon">📝</span> Notas Médicas
+          </button>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">DR</div>
+          <div class="user-details">
+            <div class="name" id="userName">-</div>
+            <div class="role" id="userRole">Doctor</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-block btn-sm" id="btnLogout">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" aria-label="Menú">☰</button>
+          <h1 class="page-title" id="pageTitle">Inicio</h1>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <!-- INICIO -->
+        <section class="module active" id="module-inicio">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📅</div>
+              <div class="stat-label">Turnos hoy</div>
+              <div class="stat-value" id="statHoy">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-label">Pendientes</div>
+              <div class="stat-value" id="statPendientes">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">✅</div>
+              <div class="stat-label">Consultas realizadas</div>
+              <div class="stat-value" id="statRealizadas">0</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Agenda de hoy</h3></div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Hora</th>
+                      <th>Paciente</th>
+                      <th>Motivo</th>
+                      <th>Estado</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="agendaHoyBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- AGENDA -->
+        <section class="module" id="module-agenda">
+          <div class="card">
+            <div class="card-header">
+              <h3>Mi agenda completa</h3>
+              <div class="flex gap-1">
+                <select id="filtroEstadoAgenda" class="form-control" style="width:auto;">
+                  <option value="">Todos los estados</option>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="confirmado">Confirmado</option>
+                  <option value="cancelado">Cancelado</option>
+                  <option value="reprogramado">Reprogramado</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Paciente</th>
+                      <th>Motivo</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="agendaBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- REGISTRAR CONSULTA -->
+        <section class="module" id="module-consultas">
+          <div id="alertConsulta"></div>
+          <div class="card">
+            <div class="card-header"><h3>Registrar consulta</h3></div>
+            <div class="card-body">
+              <form id="formConsulta">
+                <div class="form-group">
+                  <label for="consTurno">Turno / Paciente</label>
+                  <select id="consTurno" class="form-control" required>
+                    <option value="">Seleccione un turno confirmado...</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="consDiagnostico">Diagnóstico</label>
+                  <input type="text" id="consDiagnostico" class="form-control" required placeholder="Diagnóstico principal">
+                </div>
+                <div class="form-group">
+                  <label for="consNotas">Notas médicas</label>
+                  <textarea id="consNotas" class="form-control" placeholder="Observaciones, indicaciones..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="consReceta">Receta / Indicaciones</label>
+                  <textarea id="consReceta" class="form-control" placeholder="Medicación, dosis..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="consEstado">Estado de la atención</label>
+                  <select id="consEstado" class="form-control">
+                    <option value="finalizada">Finalizada</option>
+                    <option value="en_curso">En curso</option>
+                  </select>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Guardar consulta</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- HISTORIAL PACIENTES -->
+        <section class="module" id="module-historial">
+          <div class="card">
+            <div class="card-header">
+              <h3>Historial de pacientes atendidos</h3>
+              <input type="text" id="buscarPacienteHist" class="form-control" placeholder="Buscar paciente..." style="width:200px;">
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Paciente</th>
+                      <th>Diagnóstico</th>
+                      <th>Notas</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historialPacBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- NOTAS -->
+        <section class="module" id="module-notas">
+          <div id="alertNota"></div>
+          <div class="card">
+            <div class="card-header"><h3>Agregar nota a consulta existente</h3></div>
+            <div class="card-body">
+              <form id="formNota">
+                <div class="form-group">
+                  <label for="notaConsulta">Consulta</label>
+                  <select id="notaConsulta" class="form-control" required>
+                    <option value="">Seleccione...</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="notaTexto">Nueva nota</label>
+                  <textarea id="notaTexto" class="form-control" required placeholder="Agregar observación..."></textarea>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Agregar nota</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/doctor.js"></script>
+</body>
+</html>

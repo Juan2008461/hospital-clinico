@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paciente – HOSPITAL CLÍNICO</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">+</div>
+        <div>
+          <h2>HOSPITAL CLÍNICO</h2>
+          <span>Panel Paciente</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <button class="nav-item active" data-module="inicio" data-title="Inicio">
+            <span class="icon">🏠</span> Inicio
+          </button>
+          <button class="nav-item" data-module="turnos" data-title="Mis Turnos">
+            <span class="icon">📅</span> Mis Turnos
+          </button>
+          <button class="nav-item" data-module="solicitar" data-title="Solicitar Turno">
+            <span class="icon">➕</span> Solicitar Turno
+          </button>
+          <button class="nav-item" data-module="historial" data-title="Historial Médico">
+            <span class="icon">📋</span> Historial Médico
+          </button>
+          <button class="nav-item" data-module="datos" data-title="Mis Datos">
+            <span class="icon">👤</span> Mis Datos
+          </button>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">PG</div>
+          <div class="user-details">
+            <div class="name" id="userName">-</div>
+            <div class="role" id="userRole">Paciente</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-block btn-sm" id="btnLogout">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" aria-label="Menú">☰</button>
+          <h1 class="page-title" id="pageTitle">Inicio</h1>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <!-- INICIO -->
+        <section class="module active" id="module-inicio">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📅</div>
+              <div class="stat-label">Turnos próximos</div>
+              <div class="stat-value" id="statTurnos">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">✅</div>
+              <div class="stat-label">Confirmados</div>
+              <div class="stat-value" id="statConfirmados">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📋</div>
+              <div class="stat-label">Consultas previas</div>
+              <div class="stat-value" id="statConsultas">0</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Próximos turnos</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Médico</th>
+                      <th>Especialidad</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="proximosTurnosBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MIS TURNOS -->
+        <section class="module" id="module-turnos">
+          <div id="alertTurnos"></div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Mis turnos</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Médico</th>
+                      <th>Especialidad</th>
+                      <th>Motivo</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="misTurnosBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SOLICITAR TURNO -->
+        <section class="module" id="module-solicitar">
+          <div id="alertSolicitar"></div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Solicitar nuevo turno</h3>
+            </div>
+            <div class="card-body">
+              <form id="formSolicitar">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="solEspecialidad">Especialidad</label>
+                    <select id="solEspecialidad" class="form-control" required>
+                      <option value="">Seleccione...</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="solMedico">Médico</label>
+                    <select id="solMedico" class="form-control" required>
+                      <option value="">Seleccione especialidad primero</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="solFecha">Fecha</label>
+                    <input type="date" id="solFecha" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="solHora">Hora</label>
+                    <select id="solHora" class="form-control" required>
+                      <option value="08:00">08:00</option>
+                      <option value="09:00">09:00</option>
+                      <option value="10:00">10:00</option>
+                      <option value="11:00">11:00</option>
+                      <option value="12:00">12:00</option>
+                      <option value="14:00">14:00</option>
+                      <option value="15:00">15:00</option>
+                      <option value="16:00">16:00</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="solMotivo">Motivo de la consulta</label>
+                  <textarea id="solMotivo" class="form-control" placeholder="Describa brevemente el motivo..." required></textarea>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Solicitar turno</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- HISTORIAL -->
+        <section class="module" id="module-historial">
+          <div class="card">
+            <div class="card-header">
+              <h3>Historial de consultas</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Médico</th>
+                      <th>Diagnóstico</th>
+                      <th>Notas</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historialBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MIS DATOS -->
+        <section class="module" id="module-datos">
+          <div class="card">
+            <div class="card-header">
+              <h3>Datos personales</h3>
+            </div>
+            <div class="card-body" id="datosPersonales">
+              <!-- Se llena por JS -->
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal reprogramar -->
+  <div class="modal-overlay" id="modalReprogramar">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Reprogramar turno</h3>
+        <button class="modal-close" onclick="closeModal('modalReprogramar')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="reprogId">
+        <div class="form-group">
+          <label for="reprogFecha">Nueva fecha</label>
+          <input type="date" id="reprogFecha" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="reprogHora">Nueva hora</label>
+          <select id="reprogHora" class="form-control">
+            <option value="08:00">08:00</option>
+            <option value="09:00">09:00</option>
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modalReprogramar')">Cancelar</button>
+        <button class="btn btn-primary" id="btnConfirmarReprog">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/paciente.js"></script>
+</body>
+</html>

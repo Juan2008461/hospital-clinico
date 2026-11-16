@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrador – HOSPITAL CLÍNICO</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar-overlay"></div>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">+</div>
+        <div>
+          <h2>HOSPITAL CLÍNICO</h2>
+          <span>Panel Admin</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Administración</div>
+          <button class="nav-item active" data-module="inicio" data-title="Inicio">
+            <span class="icon">🏠</span> Inicio
+          </button>
+          <button class="nav-item" data-module="usuarios" data-title="Usuarios">
+            <span class="icon">👥</span> Usuarios
+          </button>
+          <button class="nav-item" data-module="medicos" data-title="Médicos">
+            <span class="icon">👨‍⚕️</span> Médicos
+          </button>
+          <button class="nav-item" data-module="especialidades" data-title="Especialidades">
+            <span class="icon">🏥</span> Especialidades
+          </button>
+          <button class="nav-item" data-module="reportes" data-title="Reportes">
+            <span class="icon">📊</span> Reportes
+          </button>
+          <button class="nav-item" data-module="config" data-title="Configuración">
+            <span class="icon">⚙️</span> Configuración
+          </button>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">AD</div>
+          <div class="user-details">
+            <div class="name" id="userName">-</div>
+            <div class="role" id="userRole">Administrador</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-block btn-sm" id="btnLogout">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" aria-label="Menú">☰</button>
+          <h1 class="page-title" id="pageTitle">Inicio</h1>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <!-- INICIO -->
+        <section class="module active" id="module-inicio">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-label">Usuarios</div>
+              <div class="stat-value" id="statUsers">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">👨‍⚕️</div>
+              <div class="stat-label">Médicos</div>
+              <div class="stat-value" id="statMedicos">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📅</div>
+              <div class="stat-label">Turnos totales</div>
+              <div class="stat-value" id="statTurnos">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🩺</div>
+              <div class="stat-label">Consultas</div>
+              <div class="stat-value" id="statConsultas">0</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Resumen del sistema</h3></div>
+            <div class="card-body">
+              <p class="text-muted">Bienvenido al panel de administración de HOSPITAL CLÍNICO. Desde aquí puede gestionar usuarios, médicos, especialidades y consultar reportes generales.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- USUARIOS -->
+        <section class="module" id="module-usuarios">
+          <div id="alertUsuarios"></div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Gestión de usuarios</h3>
+              <button class="btn btn-primary btn-sm" id="btnNuevoUsuario">+ Nuevo usuario</button>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Usuario</th>
+                      <th>Nombre</th>
+                      <th>Rol</th>
+                      <th>Email</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usuariosBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MÉDICOS -->
+        <section class="module" id="module-medicos">
+          <div id="alertMedicos"></div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Médicos</h3>
+              <button class="btn btn-primary btn-sm" id="btnNuevoMedico">+ Nuevo médico</button>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Especialidad</th>
+                      <th>Horario</th>
+                      <th>Disponible</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="medicosBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ESPECIALIDADES -->
+        <section class="module" id="module-especialidades">
+          <div id="alertEspecs"></div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Especialidades</h3>
+              <button class="btn btn-primary btn-sm" id="btnNuevaEspec">+ Nueva especialidad</button>
+            </div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Descripción</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="especsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- REPORTES -->
+        <section class="module" id="module-reportes">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Turnos pendientes</div>
+              <div class="stat-value" id="repPendientes">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Turnos confirmados</div>
+              <div class="stat-value" id="repConfirmados">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Turnos cancelados</div>
+              <div class="stat-value" id="repCancelados">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Consultas finalizadas</div>
+              <div class="stat-value" id="repConsultas">0</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Turnos por especialidad</h3></div>
+            <div class="card-body">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Especialidad</th>
+                      <th>Cantidad de turnos</th>
+                    </tr>
+                  </thead>
+                  <tbody id="repEspecsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONFIG -->
+        <section class="module" id="module-config">
+          <div id="alertConfig"></div>
+          <div class="card">
+            <div class="card-header"><h3>Configuración general</h3></div>
+            <div class="card-body">
+              <p class="mb-2">Opciones de mantenimiento del sistema de demostración.</p>
+              <div class="form-actions">
+                <button class="btn btn-warning" id="btnResetData">Restablecer datos de demostración</button>
+              </div>
+              <p class="text-muted mt-2" style="font-size:0.85rem;">Esto eliminará todos los cambios y volverá a los datos iniciales de ejemplo.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Usuario -->
+  <div class="modal-overlay" id="modalUsuario">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalUsuarioTitle">Nuevo usuario</h3>
+        <button class="modal-close" onclick="closeModal('modalUsuario')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="userEditId">
+        <div class="form-group">
+          <label>Usuario</label>
+          <input type="text" id="userUsername" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="text" id="userPassword" class="form-control" placeholder="Dejar vacío para no cambiar">
+        </div>
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="userNombre" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="userEmail" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Rol</label>
+          <select id="userRole" class="form-control">
+            <option value="paciente">Paciente</option>
+            <option value="doctor">Doctor</option>
+            <option value="recepcion">Recepción</option>
+            <option value="administrador">Administrador</option>
+            <option value="desarrollador">Desarrollador</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modalUsuario')">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveUsuario">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Médico -->
+  <div class="modal-overlay" id="modalMedico">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Nuevo médico</h3>
+        <button class="modal-close" onclick="closeModal('modalMedico')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="medNombre" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Especialidad</label>
+          <select id="medEspecialidad" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label>Horario</label>
+          <input type="text" id="medHorario" class="form-control" placeholder="08:00-16:00" value="08:00-16:00">
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="medDisponible" checked> Disponible
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modalMedico')">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveMedico">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Especialidad -->
+  <div class="modal-overlay" id="modalEspec">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Nueva especialidad</h3>
+        <button class="modal-close" onclick="closeModal('modalEspec')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="especNombre" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="especDesc" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modalEspec')">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveEspec">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
