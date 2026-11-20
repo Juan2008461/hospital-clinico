@@ -1,15 +1,3 @@
-/**
- * HOSPITAL CLÍNICO – API local de correo
- * Envía el mail de recuperación de verdad a cualquier Gmail.
- *
- * Uso:
- *   cd server
- *   npm install
- *   cp .env.example .env   (y completá SMTP_USER / SMTP_PASS)
- *   npm start
- *
- * Luego abrí el frontend con Live Server y pedí recuperación.
- */
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
@@ -85,12 +73,19 @@ app.post('/api/recover', async (req, res) => {
 
     res.json({ ok: true });
   } catch (err) {
-    console.error('Mail error:', err);
+    console.error('========== ERROR SMTP ==========');
+    console.error('Mensaje:', err.message);
+    console.error('Código:', err.code);
+    console.error('Comando:', err.command);
+    console.error('Código SMTP:', err.responseCode);
+    console.error('Respuesta Gmail:', err.response);
+    console.error('================================');
+
     res.status(500).json({
       ok: false,
-      error: 'No se pudo enviar el correo. Revisá SMTP_USER y SMTP_PASS en server/.env y que Gmail permita la contraseña de aplicación.'
+      error: 'Error SMTP: ' + (err.code || 'DESCONOCIDO')
     });
-  }
+}
 });
 
 app.listen(PORT, () => {

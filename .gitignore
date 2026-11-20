@@ -1,16 +1,4 @@
-# Variables de entorno y credenciales privadas
-.env
-.env.*
-**/.env
-**/.env.*
-!.env.example
-!**/.env.example
-
-# Dependencias instaladas localmente
 node_modules/
-**/node_modules/
-
-# Archivos del sistema y del editor
-.DS_Store
-Thumbs.db
-.vscode/
+.env
+server/.env
+dist/
